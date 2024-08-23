@@ -20,9 +20,8 @@ const userSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: function(value) {
-                // Calcular a idade com base na data de nascimento
                 const age = moment().diff(value, 'years');
-                return age >= 18; // Retorna true se a idade for 18 ou mais
+                return age >= 18;
             },
             message: 'Você deve ter pelo menos 18 anos de idade.'
         }

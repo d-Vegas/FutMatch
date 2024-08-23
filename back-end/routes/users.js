@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const moment = require('moment');
 
 // Rota para cadastro de usuário
 router.post('/register', async (req, res) => {
@@ -19,6 +20,11 @@ router.post('/register', async (req, res) => {
     }
     if (!birthdate) {
         return res.status(400).json({ msg: 'A data de nascimento é obrigatória.' });
+    }
+
+    const age = moment().diff(birthdate, 'years');
+    if (age < 18) {
+        return res.status(400).json({ msg: 'Você deve ter pelo menos 18 anos de idade.' });
     }
 
     try {
