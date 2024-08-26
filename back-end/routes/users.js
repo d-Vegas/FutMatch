@@ -84,4 +84,20 @@ router.post('/login', async (req, res) => {
     }
 });
 
+
+// Rota para deletar usuário
+router.delete('/delete', auth, async (req, res) => {
+    try {
+        let user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ msg: 'Usuário não encontrado' });
+        }
+
+        await User.findByIdAndRemove(req.user.id);
+        res.json({ msg: 'Usuário deletado com sucesso' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Erro no servidor');
+    }
+});
 module.exports = router;
