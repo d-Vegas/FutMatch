@@ -86,6 +86,17 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Rota para obter todos os usuários
+router.get('/', auth, async (req, res) => {
+    try {
+        const users = await User.find().select('-password'); // Exclui o campo 'password' dos resultados
+        res.json(users);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ msg: 'Erro no servidor' });
+    }
+});
+
 // Rota para atualização de usuário
 router.put('/update', auth, async (req, res) => {
     const { name, email, password, birthdate } = req.body;
